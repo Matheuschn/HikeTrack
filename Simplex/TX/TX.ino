@@ -15,10 +15,10 @@ void setup() {
     radio.stopListening();  //Faz com que o módulo pare de receber
 }
 void loop() {
-    Serial.println(F("Enviando.")); //Mensagem na tela
+    Serial.print(F("Enviando. ")); //Mensagem na tela
     char texto[] = "abc"; //Variável do tipo texto com a informação abc                         
      if (!radio.write(&texto, sizeof(texto))){  //Se houver erro durante a transmissão ou a mensagem enviada conter problemas, faça:
-       Serial.println(F("Falha!")); //Mensagem de falha
+       Serial.print(F("Falha!")); //Mensagem de falha
      }else {
       Serial.println(F("Mensagem enviada.")); //Mensagem enviada
      }
