@@ -1,7 +1,7 @@
 #include <SPI.h>  //Inclui a biblioteca de comunicação com o módulo (comunicação serial)
 #include "RF24.h" //Inclui a biblioteca do módulo (interpretação) 
 
-RF24 radio(7,8);
+RF24 radio(7,8); // pinos utilizados para comunicação como o rádio
 
 void setup() {
     Serial.begin(115200); //Taxa de transmissão utilizada na comunicação com o arduíno
