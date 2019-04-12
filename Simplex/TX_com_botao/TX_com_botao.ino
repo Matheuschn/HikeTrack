@@ -18,6 +18,7 @@ void setup() {
     radio.begin();  //Inicializa o módulo
     radio.setPALevel(RF24_PA_MAX);  //Define a potência do módulo
     radio.setChannel(125);  //Define a frequência utilizada pelo módulo (2400 + o número dos parênteses)
+    radio.setDataRate(RF24_250KBPS);  //Define a taxa de transmissão
     radio.openWritingPipe(0xF0F0F0F0F0LL);  // openWritingPipe inicia o canal de transmissão  
     radio.openReadingPipe(1,0xF0F0F0F0AALL);  // openReadingPipe inicia o canal de recepção
     
