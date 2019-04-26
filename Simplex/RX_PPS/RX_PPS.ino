@@ -3,7 +3,7 @@
 #include "RF24.h" //Inclui a biblioteca do módulo (interpretação)
 
 RF24 radio(7,8); // Pinos utilizados para comunicação com o módulo RF
-LiquidCrystal lcd(6, 9, 5, 4, 3, 2); // Pinos do arduíno a serem dedicados ao módulo
+LiquidCrystal lcd(6, 9, 5, 4, 3, 2); // Pinos do arduíno a serem dedicados ao módulo LCD
 
 unsigned long pacotesrecebidos = 0;
 unsigned long tempoultimaatt = 0;
@@ -24,7 +24,7 @@ void setup() {
     radio.setChannel(125);  //Define a frequência utilizada pelo módulo (2400 + o número dos parênteses)
     radio.openReadingPipe(1,0xF0F0F0F0F0LL);  // openReadingPipe inicia o canal de recepção
     radio.setCRCLength(RF24_CRC_8); //Define o tamanho campo de verificação de erros para 8
-    radio.setPayloadSize(1);  //Define o tamanho da informação a ser enviada como 1 byte
+    radio.setPayloadSize(32);  //Define o tamanho da informação a ser enviada
     radio.startListening();  //Faz com que o módulo RF comece de receber
     lcd.clear(); //Limpa a tela do LCD
 }
@@ -32,6 +32,7 @@ void setup() {
 void loop() {                                                         
     while (radio.available()) { //Enquanto estiver recebendo informação:                                  
       radio.read(&texto, sizeof(texto)); //Lê a mensagem recebida e guarda na variável "texto"
+      Serial.println("Recebido!");
       pacotesrecebidos++; //Adiciona 1 à variável de pacotes recebidos
     }
 
@@ -40,10 +41,10 @@ void loop() {
         lcd.clear();  //Limpa a tela
         pacotesrecebidos = pacotesrecebidos * 2;  //Multipilica a quantidade de pacotes recebidos em 500ms por 2, pra conseguir a quantidade de pacotes por segundo
         pacotestotal = pacotestotal + pacotesrecebidos; //Acrescenta a quantidade de pacotes recebidos nesses 500ms na variável de pacotes totais
-        sprintf(textolcdpps, "PPS: %d", pacotesrecebidos);  //Formata o texto pra ser enviado ao LCD
+        sprintf(textolcdpps, "PPS: %ld", pacotesrecebidos);  //Formata o texto pra ser enviado ao LCD
         lcd.setCursor(0, 0);  //Seleciona a linha de cima
         lcd.print(textolcdpps); //Envia o texto pra linha de cima
-        sprintf(textolcdtotal, "Total: %d", pacotestotal);  //Formata o texto pra ser enviado ao LCD
+        sprintf(textolcdtotal, "Total: %ld", pacotestotal);  //Formata o texto pra ser enviado ao LCD
         lcd.setCursor(0, 1);  //Seleciona a linha de baixo
         lcd.print(textolcdtotal); //Envia o texto pra linha de baixo
         pacotesrecebidos = 0; //Zera a quantidade de pacotes recebidos
