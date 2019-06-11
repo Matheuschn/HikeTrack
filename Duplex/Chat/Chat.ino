@@ -6,7 +6,7 @@ RF24 radio(7,8); // Pinos utilizados para comunicação com o módulo RF
 char textoRecebido[32];
 char textoEnviado[32] = "";
 byte enderecoRecebido;
-byte enderecos[][6] = {"1GRPO","2GRPO","3GRPO","4GRPO","5GRPO"};
+byte enderecos[][6] = {"1GRPO","2GRPO","3GRPO","4GRPO","5GRPO"};  //Define os nomes dos grupos
 
 void setup() {
     Serial.begin(115200); //Taxa de transmissão utilizada na comunicação com o arduíno
@@ -31,21 +31,21 @@ void setup() {
 
 void loop() {
                                                       
-    while (radio.available(&enderecoRecebido)) { //Enquanto estiver recebendo informação:                                 
+    if (radio.available(&enderecoRecebido)) { //Enquanto estiver recebendo informação:                                 
       radio.read(&textoRecebido, sizeof(textoRecebido)); //Lê a mensagem recebida e guarda na variável "texto"
-      Serial.print("Rebido de ");
+      Serial.print("Recebido do grupo ");
       Serial.print(enderecoRecebido);
       Serial.print(": ");
       Serial.println(textoRecebido);
     }
 
-    if (Serial.available()) {
-      int len = Serial.readBytesUntil('\n', textoEnviado, 31);
+    if (Serial.available()) { //Se tiver mensagem pra enviar
+      int len = Serial.readBytesUntil('\n', textoEnviado, 31);  //Corta a mensagem em 31 bytes
       textoEnviado[len] = '\0';
-      radio.stopListening();
-      radio.write(&textoEnviado, sizeof(textoEnviado));
+      radio.stopListening(); //Muda para o modo de transmissão
+      radio.write(&textoEnviado, sizeof(textoEnviado)); //Transmite a mensagem
       Serial.println("Enviado.");
-      radio.startListening();
+      radio.startListening(); //Volta para o modo recepção
     }
     
 }
