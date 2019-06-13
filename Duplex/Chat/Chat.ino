@@ -15,7 +15,7 @@ void setup() {
     radio.setPALevel(RF24_PA_MIN);  //Define  a potência do módulo RF
     radio.setDataRate(RF24_250KBPS);  //Define a taxa de transmissão
     radio.setChannel(125);  //Define a frequência utilizada pelo módulo (2400 + o número dos parênteses)
-    radio.openWritingPipe(enderecos[0]);  // openWritingPipe inicia o canal de transmissão
+    //radio.openWritingPipe(enderecos[0]);  // openWritingPipe inicia o canal de transmissão
     //radio.openWritingPipe(enderecos[1]);  // openWritingPipe inicia o canal de transmissão
     //radio.openWritingPipe(enderecos[2]);  // openWritingPipe inicia o canal de transmissão
     //radio.openWritingPipe(enderecos[3]);  // openWritingPipe inicia o canal de transmissão
@@ -33,7 +33,7 @@ void loop() {
                                                       
     if (radio.available(&enderecoRecebido)) { //Enquanto estiver recebendo informação:                                 
       radio.read(&textoRecebido, sizeof(textoRecebido)); //Lê a mensagem recebida e guarda na variável "texto"
-      Serial.print("Recebido do grupo ");
+      Serial.print("GRUPO ");
       Serial.print(enderecoRecebido);
       Serial.print(": ");
       Serial.println(textoRecebido);
