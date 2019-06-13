@@ -8,6 +8,12 @@ char textoEnviado[32] = "";
 byte enderecoRecebido;
 byte enderecos[][6] = {"1GRPO","2GRPO","3GRPO","4GRPO","5GRPO"};  //Define os nomes dos grupos
 
+int grupo = 0;  //ALTERAR ESSE VALOR DE ACORDO COM O SEU GRUPO:
+// BIKE = 0
+// RAFTING = 1
+// RAPEL = 2
+// TRILHA = 3
+
 void setup() {
     Serial.begin(115200); //Taxa de transmissão utilizada na comunicação com o arduíno
     radio.begin();  //Inicializa o módulo RF
@@ -15,11 +21,7 @@ void setup() {
     radio.setPALevel(RF24_PA_MIN);  //Define  a potência do módulo RF
     radio.setDataRate(RF24_250KBPS);  //Define a taxa de transmissão
     radio.setChannel(125);  //Define a frequência utilizada pelo módulo (2400 + o número dos parênteses)
-    //radio.openWritingPipe(enderecos[0]);  // openWritingPipe inicia o canal de transmissão
-    //radio.openWritingPipe(enderecos[1]);  // openWritingPipe inicia o canal de transmissão
-    //radio.openWritingPipe(enderecos[2]);  // openWritingPipe inicia o canal de transmissão
-    //radio.openWritingPipe(enderecos[3]);  // openWritingPipe inicia o canal de transmissão
-    //radio.openWritingPipe(enderecos[4]);  // openWritingPipe inicia o canal de transmissão
+    radio.openWritingPipe(enderecos[grupo]);  // openWritingPipe inicia o canal de transmissão
     radio.openReadingPipe(1,enderecos[0]);  // openReadingPipe inicia o canal de recepção
     radio.openReadingPipe(2,enderecos[1]);  // openReadingPipe inicia o canal de recepção
     radio.openReadingPipe(3,enderecos[2]);  // openReadingPipe inicia o canal de recepção
@@ -44,7 +46,10 @@ void loop() {
       textoEnviado[len] = '\0';
       radio.stopListening(); //Muda para o modo de transmissão
       radio.write(&textoEnviado, sizeof(textoEnviado)); //Transmite a mensagem
-      Serial.println("Enviado.");
+      Serial.print("GRUPO ");
+      Serial.print(grupo);
+      Serial.print(": ");
+      Serial.println(textoEnviado);
       radio.startListening(); //Volta para o modo recepção
     }
     
